@@ -1,0 +1,29 @@
+{
+  "name": "organization-api",
+  "version": "0.0.0",
+  "description": "API for pager evaluation project",
+  "main": "server.js",
+  "keywords": [
+    "mongo",
+    "jwt",
+    "api",
+    "hapi"
+  ],
+  "author": "Elba Sanchez",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "boom": "^3.1.2",
+    "glob": "^7.0.0",
+    "hapi": "^13.0.0",
+    "hapi-auth-jwt": "^4.0.0",
+    "joi": "^8.0.4",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^5.7.0",
+    "mongoose": "^4.4.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-nodemon": "^1.0.5"
+  }
+}
