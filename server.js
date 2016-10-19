@@ -9,26 +9,26 @@ const secret = require('./config');
 
 const server = new Hapi.Server();
 
+const dbUrl = 'mongodb://localhost:27017/organization-api';
+
 server.connection({ port: 3000 });
 
-//const dbUrl = 'mongodb://localhost/test';
+server.register(require('hapi-auth-jwt'), (err) => {
 
-// server.register(require('hapi-auth-jwt'), (err) => {
+  // We're giving the strategy both a name
+  // and scheme of 'jwt'
+  server.auth.strategy('jwt', 'jwt', {
+    key: secret,
+    verifyOptions: { algorithms: ['HS256'] }
+  });
 
-//   // We're giving the strategy both a name
-//   // and scheme of 'jwt'
-//   server.auth.strategy('jwt', 'jwt', {
-//     key: secret,
-//     verifyOptions: { algorithms: ['HS256'] }
-//   });
-
-//   glob.sync('api/**/routes/*.js', {
-//     root: __dirname
-//   }).forEach(file => {
-//     const route = require(path.join(__dirname, file));
-//     server.route(route);
-//   });
-// });
+  glob.sync('api/**/routes/*.js', {
+    root: __dirname
+  }).forEach(file => {
+    const route = require(path.join(__dirname, file));
+    server.route(route);
+  });
+});
 
 // Start the server
 
@@ -44,13 +44,12 @@ server.start((err) => {
   if (err) {
     throw err;
   }
-  console.log('Server running at: ${server.info.uri}');
-  //Once started, connect to Mongo through Mongoose
-  mongoose.connect('mongodb://localhost/test');
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', function() {
-    console.log('we are connected!');
+  console.log(`Server running at: ${server.info.uri}`);
+  // Once started, connect to Mongo through Mongoose
+  mongoose.connect(dbUrl, {}, (err) => {
+    if (err) {
+      throw err;
+    }
   });
 
 });

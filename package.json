@@ -3,6 +3,13 @@
   "version": "0.0.0",
   "description": "API for pager evaluation project",
   "main": "server.js",
+  "engines": {
+    "node": "4.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/epsanchezma/organization-api.git"
+  },
   "keywords": [
     "mongo",
     "jwt",
