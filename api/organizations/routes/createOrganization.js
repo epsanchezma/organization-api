@@ -2,6 +2,7 @@
 
 const Boom = require('boom');
 const Organization = require('../model/Organization');
+const createOrganizationSchema = require('../schemas/createOrganization');
 
 module.exports = {
   method: 'POST',
@@ -22,6 +23,9 @@ module.exports = {
         }
         res({ organization: organization }).code(201);
       });
+    },
+    validate: {
+      payload: createOrganizationSchema
     },
     // Add authentication to this route
     // The user must have a scope of `admin`
