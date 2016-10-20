@@ -19,9 +19,11 @@ module.exports = {
   path: '/api/users',
   handler: (req, res) => {
     console.log("entering create request");
+
     let user = new User();
     user.email = req.payload.email;
     user.admin = true;
+
     hashPassword(req.payload.password, (err, hash) => {
       if (err) {
         throw Boom.badRequest(err);

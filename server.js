@@ -15,8 +15,6 @@ server.connection({ port: 3000 });
 
 server.register(require('hapi-auth-jwt'), (err) => {
 
-  // We're giving the strategy both a name
-  // and scheme of 'jwt'
   server.auth.strategy('jwt', 'jwt', {
     key: secret,
     verifyOptions: { algorithms: ['HS256'] }
@@ -30,13 +28,11 @@ server.register(require('hapi-auth-jwt'), (err) => {
   });
 });
 
-// Start the server
-
 server.route({
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
-      reply('Hello, world!');
+      reply('This is a Pager project!');
   }
 });
 
@@ -45,7 +41,6 @@ server.start((err) => {
     throw err;
   }
   console.log(`Server running at: ${server.info.uri}`);
-  // Once started, connect to Mongo through Mongoose
   mongoose.connect(dbUrl, {}, (err) => {
     if (err) {
       throw err;
