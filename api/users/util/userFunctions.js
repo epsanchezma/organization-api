@@ -9,12 +9,9 @@ function verifyCredentials(req, res) {
   const password = req.payload.password;
 
   // Find an entry from the database that
-  // matches either the email or username
+  // matches the email 
   User.findOne({
-    $or: [
-      { email: req.payload.email },
-      { username: req.payload.username }
-    ]
+    email: req.payload.email
   }, (err, user) => {
     if (user) {
       bcrypt.compare(password, user.password, (err, isValid) => {
@@ -26,7 +23,7 @@ function verifyCredentials(req, res) {
         }
       });
     } else {
-      res(Boom.badRequest('Incorrect username or email!'));
+      res(Boom.badRequest('Incorrect email!'));
     }
   });
 }
