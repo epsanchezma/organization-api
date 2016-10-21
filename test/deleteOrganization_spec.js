@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 describe('Organization', () => {
 
-  describe('/GET organization', () => {
+  describe('/DELETE organization', () => {
     var token = '';
     var id = '';
     var organization = {
@@ -36,7 +36,7 @@ describe('Organization', () => {
         });
     });
 
-    it('it should GET an specific organization', (done) => {
+    it('it should DELETE an specific organization', (done) => {
 
       chai.request(server.listener)
         .post('/api/organizations')
@@ -46,10 +46,10 @@ describe('Organization', () => {
           var result = JSON.parse(res.text);
           id = result._id;
           chai.request(server.listener)
-            .get('/api/organizations/' + id)
+            .delete('/api/organizations/' + id)
             .set('Authorization', 'Bearer '+ token)
             .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(204);
               done();
             });
         })

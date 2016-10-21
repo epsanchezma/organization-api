@@ -21,7 +21,7 @@ module.exports = {
         if (err) {
           throw Boom.badRequest(err);
         }
-        res({ organization: organization }).code(201);
+        res(organization).code(201);
       });
     },
     validate: {

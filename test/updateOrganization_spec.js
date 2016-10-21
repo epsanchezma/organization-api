@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 describe('Organization', () => {
 
-  describe('/GET organization', () => {
+  describe('/UPDATE organization', () => {
     var token = '';
     var id = '';
     var organization = {
@@ -23,6 +23,12 @@ describe('Organization', () => {
         code: "123",
         orgType: "store"
       };
+
+    beforeEach((done) => {
+        Organization.remove({}, (err) => { 
+           done();         
+        });     
+    });
 
     before((done) => {
       chai.request(server.listener)
@@ -36,8 +42,7 @@ describe('Organization', () => {
         });
     });
 
-    it('it should GET an specific organization', (done) => {
-
+    it('it should UPDATE an specific organization', (done) => {
       chai.request(server.listener)
         .post('/api/organizations')
         .send(organization)
@@ -46,10 +51,11 @@ describe('Organization', () => {
           var result = JSON.parse(res.text);
           id = result._id;
           chai.request(server.listener)
-            .get('/api/organizations/' + id)
+            .patch('/api/organizations/' + id)
             .set('Authorization', 'Bearer '+ token)
+            .send({description: "Best Bookstore Ever"})
             .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(204);
               done();
             });
         })

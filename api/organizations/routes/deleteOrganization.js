@@ -18,7 +18,7 @@ module.exports = {
           if (!organization) {
             throw Boom.notFound('Organization not found!');
           }
-          res({message: 'Organization deleted!'}).code(204);
+          res().code(204);
         });      
     },
     validate: {
