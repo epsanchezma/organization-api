@@ -1,80 +1,153 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://organization.apiblueprint.org/
 
 # organization-api
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Organizations is a simple API allowing consumers to create, view, update and delete
+organizations.
 
-## Questions Collection [/questions]
+## Users Collection [/api/users]
 
-### List All Questions [GET]
+### Create a New User [POST]
+
+You may create your a new using this action. It takes a JSON
+object containing an user, this in order to be able to authenticate and user the 
+organization endpoints.
+
++ Request (application/json)
+
+        {
+            "email": "elba@gmail.com",
+            "password": "qwerty"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+        }
+
+## Authentication Collection [/api/users/authenticate]
+
+### Authenticate [POST]
+
+You are able to authenticate using this action. It takes a JSON
+object containing an user and password.
+
++ Request (application/json)
+
+        {
+            "email": "elba@gmail.com",
+            "password": "qwerty"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+        }
+
+## Organization Collection [/api/organizations]
+
+For all this endpoints you need to be authenticated, adding to the headers a valid token:
+
+`'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9'`
+
+Otherwise you will always get an error `401 Unauthorized`
+
+### List All Organizations [GET]
+
+You can get a list of all the organizations created using this action.
 
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
+                "name": "Elba's Candie Bar",
+                "description": "Candies for everyone!",
+                "orgType": "employer"
             }
         ]
 
-### Create a New Question [POST]
+### Create a New Organization [POST]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+You may create your own organization using this action. It takes a JSON
+object containing an organization.
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "name": "Elba's Candie Bar",
+            "description": "Candies for everyone!",
+            "url": "www.elbascandies.com",
+            "code": "123",
+            "orgType": "employer"
         }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /questions/2
+            Location: /api/organizations/580a14bc9ee4ea632ec3db2a
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "organization": {
+                    "orgType": "employer",
+                    "code": "123",
+                    "url": "www.elbascandies.com",
+                    "description": "Candies for everyone!",
+                    "name": "Elba's Candie Bar",
+                    "_id": "580a14bc9ee4ea632ec3db2a"
+                }
+            }
+            
+### Update an Organization [PATCH]
+
+You may update an organization using this action. It takes a JSON
+object containing an organization parameters.
+
++ Request (application/json)
+
+        {
+            "name": "Elba's Candies and Smoothies Bar"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/organizations/580a14bc9ee4ea632ec3db2a
+
+    + Body
+
+            {
+                "organization": {
+                    "orgType": "employer",
+                    "code": "123",
+                    "url": "www.elbascandies.com",
+                    "description": "Candies for everyone!",
+                    "name": "Elba's Candies and Smoothies Bar",
+                    "_id": "580a14bc9ee4ea632ec3db2a"
+                }
+            }
+            
+
+### Delete an Organization [DELETE]
+
+You may delete an organization using this action.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /api/organizations/580a14bc9ee4ea632ec3db2a
+
+    + Body
+
+            {
+                "message": "Organization deleted!"
             }
