@@ -9,7 +9,6 @@ module.exports = {
   path: '/api/organizations',
   config: {
     handler: (req, res) => {
-      console.log("entering create organization");
       let organization = new Organization();
       organization.name = req.payload.name;
       organization.description = req.payload.description;
@@ -27,8 +26,6 @@ module.exports = {
     validate: {
       payload: createOrganizationSchema
     },
-    // Add authentication to this route
-    // The user must have a scope of `admin`
     auth: {
       strategy: 'jwt',
       scope: ['admin']

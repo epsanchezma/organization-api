@@ -8,8 +8,6 @@ function verifyCredentials(req, res) {
 
   const password = req.payload.password;
 
-  // Find an entry from the database that
-  // matches the email 
   User.findOne({
     email: req.payload.email
   }, (err, user) => {
