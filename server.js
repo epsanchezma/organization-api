@@ -7,12 +7,13 @@ const glob = require('glob');
 const path = require('path');
 const config = require('./config');
 const env = process.env.NODE_ENV || "development";
+const port = parseInt(process.env.PORT) || 3000;
 
 const server = new Hapi.Server();
 
 const dbUrl = config.dbUrl[env];
 
-server.connection({ port: 3000 });
+server.connection({ port: port });
 
 server.register(require('hapi-auth-jwt'), (err) => {
   server.auth.strategy('jwt', 'jwt', {
