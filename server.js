@@ -5,18 +5,18 @@ const Boom = require('boom');
 const mongoose = require('mongoose');
 const glob = require('glob');
 const path = require('path');
-const secret = require('./config');
+const config = require('./config');
+const env = process.env.NODE_ENV || "development";
 
 const server = new Hapi.Server();
 
-const dbUrl = 'mongodb://localhost:27017/organization-api';
+const dbUrl = config.dbUrl[env];
 
 server.connection({ port: 3000 });
 
 server.register(require('hapi-auth-jwt'), (err) => {
-
   server.auth.strategy('jwt', 'jwt', {
-    key: secret,
+    key: config.key,
     verifyOptions: { algorithms: ['HS256'] }
   });
 
@@ -48,3 +48,5 @@ server.start((err) => {
   });
 
 });
+
+module.exports = server;

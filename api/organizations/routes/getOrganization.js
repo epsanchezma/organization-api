@@ -6,26 +6,26 @@ const queryOrganizationSchema = require('../schemas/getOrganization');
 
 const organizationQuery = function(req, res, filters){
   Organization
-    .findOne({_id: req.params.id})
+    .find(req.query)
     .select(filters)
-    .exec((err, organization) => {
-      if (organization) {
-        res(organization).code(200);;
-      } else {
-        res({status_code: 404, message: "No organization found"}).code(404);
-      }
+    .exec((err, organizations) => {
       if (err) {
         throw Boom.badRequest(err);
       }
+      res({organizations: organizations}).code(200);;
     });
 };
 
 module.exports = {
   method: 'GET',
-  path: '/api/organizations/{id}',
+  path: '/api/organizations',
   config: {
     handler: (req, res) => {
-      organizationQuery(req, res, '-code -__v -url');
+      if (req.query.code) {
+        organizationQuery(req, res, '-__v -url');
+      } else {
+        organizationQuery(req, res, '-code -__v -url');
+      }
     },
     validate: {
       query: queryOrganizationSchema.querySchema
